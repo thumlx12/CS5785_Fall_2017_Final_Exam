@@ -1,0 +1,8 @@
+data.zip
+data/
+*.pyc
+*.xlsx
+*.gz
+.DS_Store
+.idea
+.ipynb_checkpoints
