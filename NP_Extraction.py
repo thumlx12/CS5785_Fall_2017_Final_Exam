@@ -3,8 +3,9 @@ import re
 import pprint
 from nltk import Tree
 from nltk.stem.porter import PorterStemmer
-from sets import Set
-from pattern.text.en import singularize
+#from sets import Set
+#from pattern3.text.it.inflect import singularize
+#from pattern.text.en import singularize
 
 patterns = """
     NP: {<JJ>*<NN*>+}
@@ -50,7 +51,7 @@ def prepare_text(input):
         for i in range(len(sentence)):
             if sentence[i][1] == 'NNS':
                 tlst = list(sentence[i])
-                tlst[0] = singularize(tlst[0])
+                #tlst[0] = singularize(tlst[0])
                 tlst[1] = 'NN'
                 sentence[i] = tuple(tlst)
     sentences = [NPChunker.parse(sent) for sent in sentences]
@@ -109,4 +110,4 @@ Never fails to raise his hat politely to a lady acquaintance; nor to
 a male friend who may be walking with a lady--it is a courtesy to the
 lady.
 """
-    print(Set(find_nps(sample_text)))
+    print(set(find_nps(sample_text)))
