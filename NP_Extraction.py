@@ -24,6 +24,19 @@ de_nonletter = re.compile('[^a-zA-Z]')
 ps = PorterStemmer()
 
 
+def cmpNP(target, origin):
+    t_words = target.split(' ')
+    o_words = origin.split(' ')
+    sameWords = list(set(t_words) & set(o_words))
+    # if sameWords.__len__() > 0:
+    #     print(sameWords, target, float(len(sameWords)) / len(t_words))
+    return float(len(sameWords)) / len(t_words)
+
+
+def deleteEmpty(list):
+    return [item for item in list if len(item) > 0]
+
+
 def prepare_text(input):
     sentences = nltk.sent_tokenize(input)
     sentences = [nltk.word_tokenize(sent) for sent in sentences]
@@ -31,7 +44,7 @@ def prepare_text(input):
         for j in range(len(sentences[i])):
             sentences[i][j] = de_nonletter.sub('', sentences[i][j].lower())
 
-    sentences = [item for item in sentences if item.__len__() > 0]
+    sentences = [deleteEmpty(sent) for sent in sentences]
     sentences = [nltk.pos_tag(sent) for sent in sentences]
     for sentence in sentences:
         for i in range(len(sentence)):
