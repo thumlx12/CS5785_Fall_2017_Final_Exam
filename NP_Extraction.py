@@ -1,11 +1,8 @@
 import nltk
 import re
-import pprint
+from sets import Set
 from nltk import Tree
-from nltk.stem.porter import PorterStemmer
-#from sets import Set
-#from pattern3.text.it.inflect import singularize
-#from pattern.text.en import singularize
+from nltk.stem import WordNetLemmatizer
 
 patterns = """
     NP: {<JJ>*<NN*>+}
@@ -14,7 +11,7 @@ patterns = """
 
 new_patterns = """
     NP:    {<DT><WP><VBP>*<RB>*<VBN><IN><NN>}
-           {<NN|NNS|NNP|NNPS><IN>*<NN|NNS|NNP|NNPS>+}
+           {<NN|NNS|NNP|NNPS><IN    >*<NN|NNS|NNP|NNPS>+}
            {<JJ>*<NN|NNS|NNP|NNPS><CC>*<NN|NNS|NNP|NNPS>+}
            {<JJ>*<NN|NNS|NNP|NNPS>+}
 
@@ -22,20 +19,37 @@ new_patterns = """
 
 NPChunker = nltk.RegexpParser(patterns)
 de_nonletter = re.compile('[^a-zA-Z]')
-ps = PorterStemmer()
+wl = WordNetLemmatizer()
 
 
 def cmpNP(target, origin):
     t_words = target.split(' ')
     o_words = origin.split(' ')
     sameWords = list(set(t_words) & set(o_words))
-    # if sameWords.__len__() > 0:
-    #     print(sameWords, target, float(len(sameWords)) / len(t_words))
-    return float(len(sameWords)) / len(t_words)
+    return len(sameWords)
 
 
 def deleteEmpty(list):
     return [item for item in list if len(item) > 0]
+
+
+def findNoun(input):
+    dictionary = Set()
+    sentences = nltk.sent_tokenize(input)
+    sentences = [nltk.word_tokenize(sent) for sent in sentences]
+    for i in range(len(sentences)):
+        for j in range(len(sentences[i])):
+            sentences[i][j] = de_nonletter.sub('', sentences[i][j].lower())
+
+    sentences = [deleteEmpty(sent) for sent in sentences]
+    sentences = [nltk.pos_tag(sent) for sent in sentences]
+    for sent in sentences:
+        for word in sent:
+            if word[1] == 'NNS':
+                dictionary.add(wl.lemmatize(word[0]))
+            elif word[1] == 'NN':
+                dictionary.add(word[0])
+    return dictionary
 
 
 def prepare_text(input):
@@ -51,7 +65,7 @@ def prepare_text(input):
         for i in range(len(sentence)):
             if sentence[i][1] == 'NNS':
                 tlst = list(sentence[i])
-                #tlst[0] = singularize(tlst[0])
+                tlst[0] = wl.lemmatize(tlst[0])
                 tlst[1] = 'NN'
                 sentence[i] = tuple(tlst)
     sentences = [NPChunker.parse(sent) for sent in sentences]
@@ -110,4 +124,4 @@ Never fails to raise his hat politely to a lady acquaintance; nor to
 a male friend who may be walking with a lady--it is a courtesy to the
 lady.
 """
-    print(set(find_nps(sample_text)))
+    print(findAdjNoun(sample_text))
