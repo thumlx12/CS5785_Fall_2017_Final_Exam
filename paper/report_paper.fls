@@ -1,0 +1,10 @@
+PWD /Users/mlx/iCloud Drive (Archive)/Documents/FallSemester/AppliedMachineLearning/FinalProject/paper
+INPUT /usr/local/texlive/2017/texmf.cnf
+INPUT /usr/local/texlive/2017/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt
+INPUT report_paper.tex
+OUTPUT report_paper.log
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/base/size10.clo
+INPUT /usr/local/texlive/2017/texmf-dist/tex/latex/base/size10.clo

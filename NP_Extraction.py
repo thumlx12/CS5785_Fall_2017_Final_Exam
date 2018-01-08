@@ -33,7 +33,7 @@ def deleteEmpty(list):
     return [item for item in list if len(item) > 0]
 
 
-def findNoun(input):
+def findTypeWord(input, typeList):
     dictionary = Set()
     sentences = nltk.sent_tokenize(input)
     sentences = [nltk.word_tokenize(sent) for sent in sentences]
@@ -45,10 +45,8 @@ def findNoun(input):
     sentences = [nltk.pos_tag(sent) for sent in sentences]
     for sent in sentences:
         for word in sent:
-            if word[1] == 'NNS':
+            if word[1] in typeList:
                 dictionary.add(wl.lemmatize(word[0]))
-            elif word[1] == 'NN':
-                dictionary.add(word[0])
     return dictionary
 
 
@@ -84,44 +82,6 @@ def parsed_text_to_NP(sentences):
     return nps
 
 
-def find_nps(text):
-    prepared = prepare_text(text)
-    return parsed_text_to_NP(prepared)
-
-
 if __name__ == "__main__":
-    sample_text = """Good behaviors upon the street, or public promenade, marks the gentleman
-most effectually; rudeness, incivility, disregard of "what the world
-says," marks the person of low breeding. We always know, in walking a
-square with a man, if he is a gentleman or not. A real gentility never
-does the following things on the street, in presence of observers:--
-
-Never picks the teeth, nor scratches the head.
-
-Never swears or talks uproariously.
-
-Never picks the nose with the finger.
-
-Never smokes, or spits upon the walk, to the exceeding annoyance of
-those who are always disgusted with tobacco in any shape.
-
-Never stares at any one, man or woman, in a marked manner.
-
-Never scans a lady's dress impertinently, and makes no rude remarks
-about her.
-
-Never crowds before promenaders in a rough or hurried way.
-
-Never jostles a lady or gentleman without an "excuse me."
-
-Never treads upon a lady's dress without begging pardon.
-
-Never loses temper, nor attracts attention by excited conversation.
-
-Never dresses in an odd or singular manner, so as to create remark.
-
-Never fails to raise his hat politely to a lady acquaintance; nor to
-a male friend who may be walking with a lady--it is a courtesy to the
-lady.
-"""
-    print(findAdjNoun(sample_text))
+    sent = 'A men is driving a colorful car.'
+    findTypeWord(sent, ['NN','NNS'])
